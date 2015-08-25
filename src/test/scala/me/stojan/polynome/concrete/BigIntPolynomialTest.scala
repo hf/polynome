@@ -95,4 +95,40 @@ class BigIntPolynomialTest extends PolynomeTest {
 
     (a * b) should be (BigIntPolynomial(5, 1, BigIntPolynomial(4, 2, BigIntPolynomial(3, 2, BigIntPolynomial(2, 1)))))
   }
+
+  it should "divide the polynomials [+ 1^x3, [+ 1x^2, [+ 1x^1, 0. ]]] / [+ 1x^1, 0. ]" in {
+    val a = BigIntPolynomial(1, 1)
+    val b = BigIntPolynomial(3, 1, BigIntPolynomial(2, 1, a))
+
+    val q = BigIntPolynomial(2, 1, BigIntPolynomial(1, 1, BigIntPolynomial(0, 1)))
+    val r = BigIntPolynomial()
+
+    (b / a) should be ((q, r))
+  }
+
+  it should "divide the polynomials [+ 1x^3, [- 2x^2, [- 4x^0, 0. ]]] / [+ 1x^1, [- 3x^0, 0. ]]" in {
+    val a = BigIntPolynomial(3, 1, BigIntPolynomial(2, -2, BigIntPolynomial(0, -4)))
+    val b = BigIntPolynomial(1, 1, BigIntPolynomial(0, -3))
+
+    val q = BigIntPolynomial(2, 1, BigIntPolynomial(1, 1, BigIntPolynomial(0, 3)))
+    val r = BigIntPolynomial(0, 5)
+
+    (a / b) should be ((q, r))
+  }
+
+  it should "divide 0. / [+ 1x^1, 0. ]" in {
+    val a = BigIntPolynomial()
+    val b = BigIntPolynomial(1, 1)
+
+    val zero = BigIntPolynomial()
+
+    (a / b) should be ((zero, zero))
+  }
+
+  it should "divide [+ 1x^1, 0. ] / [+ 1x^2, 0. ]" in {
+    val a = BigIntPolynomial(1, 1)
+    val b = BigIntPolynomial(2, 1)
+
+    (a / b) should be ((BigIntPolynomial(), a))
+  }
 }

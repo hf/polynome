@@ -27,7 +27,7 @@ trait Polynomial[V] {
   /**
    * Subtracts two polynomials together.
    */
-  def -(p: Polynomial[V]): Polynomial[V]
+  def -(p: Polynomial[V]): Polynomial[V] = this + (-p)
 
   /**
    * Multiplies the highest term of this polynomial with all of the terms of
@@ -41,6 +41,28 @@ trait Polynomial[V] {
    * Uses `*+` and `+` to compute the multiplication.
    */
   def *(p: Polynomial[V]): Polynomial[V] = (this.sub * p) + (p *+ this)
+
+  /**
+   * Divides the leading terms of this and p.
+   */
+  def /-(p: Polynomial[V]): Polynomial[V]
+
+  /**
+   * Divides this and p using recursive long division.
+   *
+   * Returns a tuple of the quotient (at _1) and the remainder (at _2).
+   *
+   * Division with 0 will return (0, 0).
+   */
+  def /(p: Polynomial[V]): (Polynomial[V], Polynomial[V]) =
+    if (degree != -1 && degree >= p.degree) {
+      val t = this /- p
+      val r = this - (t * p)
+      val ret = r / p
+      (t + ret._1, ret._2)
+    } else {
+      (NullPolynomial[V](), this)
+    }
 
   /**
    * Unary negation: Negates all of the terms of this polynomial.
@@ -98,6 +120,16 @@ case class NullPolynomial[V]() extends Polynomial[V] {
    * p * 0 = 0.
    */
   override def *(p: Polynomial[V]): Polynomial[V] = this
+
+  /**
+   * 0 /- p = 0.
+   */
+  override def /-(p: Polynomial[V]): Polynomial[V] = this
+
+  /**
+   * 0 / p = (0., 0.)
+   */
+  override def /(p: Polynomial[V]): (Polynomial[V], Polynomial[V]) = (this, this)
 
   /**
    * (-0) = 0.
