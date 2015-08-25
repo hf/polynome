@@ -1,6 +1,8 @@
 Polynome
 ========
 
+[![Build Status](https://travis-ci.org/hf/polynome.svg)](https://travis-ci.org/hf/polynome)
+
 Polynome is a simple implementation of polynomials (and their arithmetic) in
 Scala. It solves the problem of having different types of coefficients, namely
 `BigInt`s or even implementing things like polynomial finite fields.
