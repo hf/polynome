@@ -16,18 +16,18 @@ private sealed case class BIPolynomial(
         if (c == 0) {
           sub + p.sub
         } else {
-          BIPolynomial(degree, coefficient + p.coefficient, sub + p.sub)
+          BIPolynomial(degree, c, sub + p.sub)
         }
       } else {
         BIPolynomial(degree, coefficient, sub + p)
       }
     }
 
-  override def -(p: Polynomial[BigInt]): Polynomial[BigInt] =
-    this + (- p)
-
   override def *+(p: Polynomial[BigInt]): Polynomial[BigInt] =
     BIPolynomial(degree + p.degree, coefficient * p.coefficient, this.sub *+ p)
+
+  override def /-(p: Polynomial[BigInt]): Polynomial[BigInt] =
+    BIPolynomial(degree - p.degree, coefficient / p.coefficient, BigIntNullPolynomial)
 
   override def unary_-(): Polynomial[BigInt] =
     BIPolynomial(degree, - coefficient, - sub)
@@ -36,6 +36,14 @@ private sealed case class BIPolynomial(
 private object BigIntNullPolynomial extends NullPolynomial[BigInt]
 
 object BigIntPolynomial {
+  /**
+   * Constructs a new 0 term.
+   */
+  def apply(): NullPolynomial[BigInt] = BigIntNullPolynomial
+
+  /**
+   * Constructs a new term.
+   */
   def apply(degree: Long, coefficient: BigInt, sub: Polynomial[BigInt] = BigIntNullPolynomial): Polynomial[BigInt] =
     BIPolynomial(degree, coefficient, sub)
 }
