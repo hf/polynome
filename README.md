@@ -15,6 +15,24 @@ are recursive.
 Turns out you can cleanly and in a type-safe way implement a lot of mathematical
 structures in Scala. I wish scientific papers were written in Scala.
 
+## Use It
+
+Published on Sonatype:
+
+```xml
+<dependency>
+  <groupId>me.stojan</groupId>
+  <artifactId>polynome_2.11</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
+```
+
+... or in SBT:
+
+```scala
+libraryDependencies += "me.stojan" %% "polynome" % "0.0.1-SNAPSHOT"
+```
+
 ## Example
 
 ```scala
