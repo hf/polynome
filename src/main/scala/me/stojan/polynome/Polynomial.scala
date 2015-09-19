@@ -44,6 +44,8 @@ trait Polynomial[V] {
 
   /**
    * Divides the leading terms of this and p.
+   *
+   * If the coefficients of the division are 0, this must return NonTerm.
    */
   def /-(p: Polynomial[V]): Polynomial[V]
 
@@ -57,9 +59,14 @@ trait Polynomial[V] {
   def /(p: Polynomial[V]): (Polynomial[V], Polynomial[V]) =
     if (degree != -1 && degree >= p.degree) {
       val t = this /- p
-      val r = this - (t * p)
-      val ret = r / p
-      (t + ret._1, ret._2)
+
+      if (null == t) { // coefficients were 0
+        (NullPolynomial[V](), this)
+      } else {
+        val r = this - (t * p)
+        val ret = r / p
+        (t + ret._1, ret._2)
+      }
     } else {
       (NullPolynomial[V](), this)
     }

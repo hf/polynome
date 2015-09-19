@@ -131,4 +131,25 @@ class BigIntPolynomialTest extends PolynomeTest {
 
     (a / b) should be ((BigIntPolynomial(), a))
   }
+
+  it should "divide [+ 1x^1, 0.] / [+ 1x^1, 0. ]" in {
+    val a = BigIntPolynomial(1, 1)
+    val b = BigIntPolynomial(1, 1)
+
+    (a / b) should be ((BigIntPolynomial(0, 1), BigIntPolynomial()))
+  }
+
+  it should "divide [+ 7x^1, 0.] / [+ 8x^1, 0.]" in {
+    val a = BigIntPolynomial(1, 7)
+    val b = BigIntPolynomial(1, 8)
+
+    (a / b) should be (BigIntPolynomial(), a)
+  }
+
+  it should "divide [+ 1x^7, [+ 1x^6, 0.]] / [+ 3x^7, [+ 3x^6, 0.]]" in {
+    val a = BigIntPolynomial(7, 1, BigIntPolynomial(6, 1))
+    val b = BigIntPolynomial(7, 3, BigIntPolynomial(6, 3))
+
+    (a / b) should be (BigIntPolynomial(), a)
+  }
 }
