@@ -26,8 +26,15 @@ private sealed case class BIPolynomial(
   override def *+(p: Polynomial[BigInt]): Polynomial[BigInt] =
     BIPolynomial(degree + p.degree, coefficient * p.coefficient, this.sub *+ p)
 
-  override def /-(p: Polynomial[BigInt]): Polynomial[BigInt] =
-    BIPolynomial(degree - p.degree, coefficient / p.coefficient, BigIntNullPolynomial)
+  override def /-(p: Polynomial[BigInt]): Polynomial[BigInt] = {
+    val coeff = coefficient / p.coefficient
+
+    if (0 == coeff) {
+      null
+    } else {
+      BIPolynomial(degree - p.degree, coefficient / p.coefficient, BigIntNullPolynomial)
+    }
+  }
 
   override def unary_-(): Polynomial[BigInt] =
     BIPolynomial(degree, - coefficient, - sub)
